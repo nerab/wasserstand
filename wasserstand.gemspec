@@ -4,9 +4,9 @@ require File.expand_path('../lib/wasserstand/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Nicholas E. Rabenau"]
   gem.email         = ["nerab@gmx.net"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Unofficial Ruby wrapper for Pegel Online}
+  gem.summary       = %q{Wasserstand auf deutschen Flüssen}
+  gem.homepage      = "http://github.com/nerab/wasserstand"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
@@ -14,4 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = "wasserstand"
   gem.require_paths = ["lib"]
   gem.version       = Wasserstand::VERSION
+
+  gem.add_runtime_dependency 'require_all'
+  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'rake'
 end

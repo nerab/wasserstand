@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'bundler'
+Bundler.require
+
+require 'wasserstand'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+end.parse!
+
+puts Wasserstand.new['BODENSEE'].pegel.first.last.messwerte.first
