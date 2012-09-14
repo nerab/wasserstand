@@ -13,4 +13,4 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-puts Wasserstand.new['BODENSEE'].pegel.first.last.messwerte.first
+puts Wasserstand::Waterway['BODENSEE'].pegel.first.last.messwerte.first
