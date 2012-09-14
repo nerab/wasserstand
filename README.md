@@ -1,6 +1,8 @@
 # Wasserstand
 
-TODO: Write a gem description
+Unofficial Ruby wrapper for [Pegel Online](http://www.pegelonline.wsv.de/)
+
+[![Build Status](https://secure.travis-ci.org/nerab/wasserstand.png?branch=master)](http://travis-ci.org/nerab/wasserstand)
 
 ## Installation
 
@@ -18,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+TODO
 
 ## Contributing
 
