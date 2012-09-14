@@ -2,15 +2,15 @@ module Wasserstand
   class Waterway
     class << self
       def [](name)
-        provider[name]
+        Wasserstand.provider[name]
       end
     end
 
-    attr_reader :name, :pegel
+    attr_reader :name, :level
 
     def initialize(name)
       @name = name
-      @pegel = {}
+      @level = {}
     end
   end
 end

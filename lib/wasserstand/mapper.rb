@@ -19,15 +19,17 @@ module Wasserstand
   class Mapper
     class << self
       def map(node)
-        Waterway.new(node.xpath('name').text) .tap do |g|
+        Waterway.new(node.xpath('name').text) .tap do |ww|
           node.xpath('item').each do |item|
-            id   = item.xpath('pegelnummer').text
-            name = item.xpath('pegelname').text
-            km   = item.xpath('km').text
+            ww.level[name] = Level.new(item.xpath('pegelnummer').text).tap do |pegel|
+              pegel.name = item.xpath('pegelname').text
+              pegel.km = item.xpath('km').text
 
-            g.pegel[name] = Pegel.new(id, name, km).tap do |pegel|
               messdatum = Time.now # TODO parse date from date and time elements
-              pegel.messwerte << Messwert.new(messdatum, item.xpath('messwert').text, item.xpath('tendenz').text)
+              wert = item.xpath('messwert').text
+              tendenz = item.xpath('tendenz').text
+
+              pegel.measurements << Measurement.new(messdatum, wert, tendenz)
             end
           end
         end
