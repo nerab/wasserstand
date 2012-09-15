@@ -21,13 +21,17 @@ module Wasserstand
       def map(node)
         Waterway.new(node.xpath('name').text) .tap do |ww|
           node.xpath('item').each do |item|
-            ww.level[name] = Level.new(item.xpath('pegelnummer').text).tap do |pegel|
-              pegel.name = item.xpath('pegelname').text
+            pegel_name = item.xpath('pegelname').text
+            ww.levels[pegel_name] = Level.new(item.xpath('pegelnummer').text).tap do |pegel|
+              pegel.name = pegel_name
               pegel.km = item.xpath('km').text
 
-              messdatum = Time.now # TODO parse date from date and time elements
-              wert = item.xpath('messwert').text
-              tendenz = item.xpath('tendenz').text
+              datum = item.xpath('datum').text
+              uhrzeit = item.xpath('uhrzeit').text
+
+              messdatum = Time.parse("#{datum} #{uhrzeit}")
+              wert = item.xpath('messwert').text.sub(',', '.').to_f
+              tendenz = item.xpath('tendenz').text.downcase.to_sym
 
               pegel.measurements << Measurement.new(messdatum, wert, tendenz)
             end

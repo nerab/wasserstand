@@ -6,11 +6,11 @@ module Wasserstand
       end
     end
 
-    attr_reader :name, :level
+    attr_reader :name, :levels
 
     def initialize(name)
       @name = name
-      @level = {}
+      @levels = {}
     end
   end
 end
