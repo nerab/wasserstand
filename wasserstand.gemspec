@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Wasserstand::VERSION
 
   gem.add_runtime_dependency 'require_all'
-  gem.add_runtime_dependency 'nokogiri', '~> 1.4'
+  gem.add_runtime_dependency 'nokogiri'
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'rake'
 end
