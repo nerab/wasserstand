@@ -11,7 +11,7 @@ module Wasserstand
 
         case results.size
         when 0
-          return []
+          return nil # loookup returns nil if not found. This is a lookup, not find_all.
         when 1
           return Mapper.map(results.first)
         else

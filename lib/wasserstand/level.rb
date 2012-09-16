@@ -3,16 +3,17 @@ module Wasserstand
   # see http://www.pegelonline.wsv.de/gast/hilfe#hilfe_pegelparameter
   #
   class Level # Pegel
-    attr_reader :id
-    attr_accessor :name, :km, :measurements
+    attr_reader :name
+    attr_accessor :level_id, :km, :measurements, :waterway
 
-    def initialize(id)
-      @id = id
+    def initialize(name, waterway)
+      @name = name
+      @waterway = waterway
       @measurements = []
     end
 
     def to_s
-      "#{@name} (km #{@km}): #{@measurements.last}"
+      "#{@name} (#{@waterway}, km #{@km}): #{@measurements.last}"
     end
   end
 end
