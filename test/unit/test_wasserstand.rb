@@ -5,7 +5,7 @@ class TestWasserstand < MiniTest::Unit::TestCase
 
   def setup
     url = File.join(File.dirname(__FILE__), '..', 'fixtures', 'pegelstaende_neu.xml')
-    Wasserstand.provider = Provider::PegelOnline.new(url)
+    Wasserstand.waterway_provider = PegelOnline::WaterwayProvider.new(url)
   end
 
   def test_plain
@@ -13,10 +13,14 @@ class TestWasserstand < MiniTest::Unit::TestCase
   end
 
   def test_size
-    assert_equal(1142, Waterway.all.size)
+    assert_equal(77, Waterway.all.size)
   end
 
-  def test_levels
+  def test_levels_size
+    assert_equal(534, Level.all.size)
+  end
+
+  def test_waterway_levels
     assert_equal(1, Waterway['BODENSEE'].levels.size)
   end
 
@@ -35,8 +39,8 @@ class TestWasserstand < MiniTest::Unit::TestCase
   end
 
   def test_level_lookup
-    assert(Waterway['BODENSEE'].levels['KONSTANZ'])
-    assert(Level['KONSTANZ'])
+    assert(Waterway['Elbe'].levels['Pirna'])
+    assert(Level['Pirna'])
     assert(Waterway['ELBE-HAVEL-KANAL'].levels['GENTHIN'])
     assert(Level['GENTHIN'])
   end

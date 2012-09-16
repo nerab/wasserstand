@@ -7,10 +7,14 @@ require_rel 'wasserstand'
 
 module Wasserstand
   class << self
-    attr_writer :provider
+    attr_writer :waterway_provider, :level_provider
 
-    def provider
-      @provider ||= Provider::PegelOnline.new
+    def waterway_provider
+      @waterway_provider ||= PegelOnline::WaterwayProvider.new
+    end
+
+    def level_provider
+      @level_provider ||= PegelOnline::LevelProvider.new
     end
   end
 end
