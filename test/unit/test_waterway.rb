@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestWaterway < WasserstandTestCase
-  def test_waterway_finder
+  def test_finder
     assert_equal(['ELBE', 'ELBE-HAVEL-KANAL', 'ELBESEITENKANAL'], Waterway.find_by_name('ELB.*').map{|w| w.name})
     assert_equal(7, Waterway.find_by_name('^E').size)
   end
@@ -10,7 +10,7 @@ class TestWaterway < WasserstandTestCase
     assert_equal(77, Waterway.all.size)
   end
 
-  def test_waterway_levels
+  def test_levels
     assert_equal(1, Waterway['BODENSEE'].levels.size)
   end
 

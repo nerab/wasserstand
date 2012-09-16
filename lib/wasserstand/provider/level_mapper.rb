@@ -18,7 +18,11 @@ module Wasserstand
       class << self
         def map(item)
           level_name = item.xpath('pegelname').text
+
           Level.new(level_name).tap do |pegel|
+            # The level class will resolve the name to a real object if required
+            pegel.waterway = item.xpath('../name').text
+
             pegel.level_id = item.xpath('pegelnummer').text
             pegel.km = item.xpath('km').text.sub(',', '.').to_f
             datum = item.xpath('datum').text
