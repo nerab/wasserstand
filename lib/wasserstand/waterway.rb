@@ -19,6 +19,10 @@ module Wasserstand
       def all
         Wasserstand.waterway_provider.all
       end
+
+      def find_by_name(regex)
+        Wasserstand.waterway_provider.find_by_name(regex)
+      end
     end
 
     attr_reader :name, :levels

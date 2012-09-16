@@ -8,8 +8,9 @@ class TestWasserstand < MiniTest::Unit::TestCase
     Wasserstand.waterway_provider = PegelOnline::WaterwayProvider.new(url)
   end
 
-  def test_plain
-    assert Waterway['BODENSEE']
+  def test_waterway_finder
+    assert_equal(['ELBE', 'ELBE-HAVEL-KANAL', 'ELBESEITENKANAL'], Waterway.find_by_name('ELB.*').map{|w| w.name})
+    assert_equal(7, Waterway.find_by_name('^E').size)
   end
 
   def test_size
@@ -41,6 +42,7 @@ class TestWasserstand < MiniTest::Unit::TestCase
   def test_level_lookup
     assert(Waterway['Elbe'].levels['Pirna'])
     assert(Level['Pirna'])
+
     assert(Waterway['ELBE-HAVEL-KANAL'].levels['GENTHIN'])
     assert(Level['GENTHIN'])
   end

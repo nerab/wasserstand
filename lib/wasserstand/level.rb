@@ -14,6 +14,10 @@ module Wasserstand
     end
 
     attr_reader :name
+
+    #
+    # Note that waterway is not always populated. It may have to be looked up externally.
+    #
     attr_accessor :level_id, :km, :measurements, :waterway
 
     def initialize(name)
