@@ -6,7 +6,6 @@ module Wasserstand
       end
 
       def [](name)
-        doc = Nokogiri::HTML(fetch(@url), nil, 'ISO-8859-1')
         results = doc.xpath(xpath_lookup(name))
 
         case results.size
@@ -20,13 +19,13 @@ module Wasserstand
       end
 
       def all
-        Nokogiri::HTML(fetch(@url), nil, 'ISO-8859-1').xpath(xpath_all).map{|o| mapper.map(o)}
+        doc.xpath(xpath_all).map{|o| mapper.map(o)}
       end
 
       def find_by_name(name_expression)
         # Not the best performing way, but it gives us the ability to use the  XPath 2.0 'matches' function
         # which isn't supported in Nokogiri (yet).
-        Nokogiri::HTML(fetch(@url), nil, 'ISO-8859-1').xpath(xpath_finder(name_expression), Class.new{
+        doc.xpath(xpath_finder(name_expression), Class.new{
           def matches(node_set, regex)
             node_set.find_all do |node|
               node.to_s.match(%r{#{regex}})
@@ -38,7 +37,7 @@ module Wasserstand
       protected
 
       def xpath_lookup(name)
-        "#{xpath_all}[#{name_attribute}/text() = '#{name.upcase}']"
+        "#{xpath_all}[#{name_attribute}/text() = '#{UnicodeUtils.upcase(name)}']"
       end
 
       def xpath_finder(regex)
@@ -51,6 +50,12 @@ module Wasserstand
 
       def name_attribute
         'name'
+      end
+
+      private
+
+      def doc
+        Nokogiri::HTML(fetch(@url), nil, 'ISO-8859-1')
       end
     end
 

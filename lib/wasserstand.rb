@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'tzinfo'
+require 'unicode_utils/upcase'
 
 require 'require_all'
 require_rel 'wasserstand'
