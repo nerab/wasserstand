@@ -30,9 +30,9 @@ module Wasserstand
 
             messdatum = TZInfo::Timezone.get('Europe/Berlin').local_to_utc(Time.parse("#{datum} #{uhrzeit}"))
             wert = item.xpath('messwert').text.sub(',', '.').to_f
-            tendenz = item.xpath('tendenz').text.downcase.to_sym
+            tendenz = item.xpath('tendenz').text
 
-            pegel.measurements << Measurement.new(messdatum, wert, tendenz)
+            pegel.measurements << Measurement.new(messdatum, wert, Trend.new(tendenz))
           end
         end
       end
