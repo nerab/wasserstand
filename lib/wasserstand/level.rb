@@ -5,15 +5,21 @@ module Wasserstand
   class Level # Pegel
     class << self
       def [](name)
-        Wasserstand.level_provider[name]
+        provider[name]
       end
 
       def all
-        Wasserstand.level_provider.all
+        provider.all
       end
 
       def find_by_name(regex)
-        Wasserstand.level_provider.find_by_name(regex)
+        provider.find_by_name(regex)
+      end
+
+      private
+
+      def provider
+        Wasserstand.providers[PegelOnline::LevelProvider]
       end
     end
 

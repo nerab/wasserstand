@@ -45,6 +45,7 @@ module Wasserstand
       end
 
       def fetch(url)
+        STDERR.puts "FETCH #{url}"
         open(url).read
       end
 

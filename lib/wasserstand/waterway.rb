@@ -13,15 +13,21 @@ module Wasserstand
   class Waterway
     class << self
       def [](name)
-        Wasserstand.waterway_provider[name]
+        provider[name]
       end
 
       def all
-        Wasserstand.waterway_provider.all
+        provider.all
       end
 
       def find_by_name(regex)
-        Wasserstand.waterway_provider.find_by_name(regex)
+        provider.find_by_name(regex)
+      end
+
+      private
+
+      def provider
+        Wasserstand.providers[PegelOnline::WaterwayProvider]
       end
     end
 

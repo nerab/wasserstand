@@ -6,7 +6,7 @@ class WasserstandTestCase < MiniTest::Unit::TestCase
 
   def setup
     url = File.join(File.dirname(__FILE__), 'fixtures', 'pegelstaende_neu.xml')
-    Wasserstand.waterway_provider = PegelOnline::WaterwayProvider.new(url)
-    Wasserstand.level_provider = PegelOnline::LevelProvider.new(url)
+    Wasserstand.providers[PegelOnline::WaterwayProvider] = PegelOnline::WaterwayProvider.new(url)
+    Wasserstand.providers[PegelOnline::LevelProvider] = PegelOnline::LevelProvider.new(url)
   end
 end
