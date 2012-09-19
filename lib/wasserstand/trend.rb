@@ -5,15 +5,19 @@ module Wasserstand
 
   class Trend
     def initialize(value)
-      @value = {'gleich'   => :gleichbleibend,
-                'steigend' => :steigend,
-                'fallend'  => :fallend}[UnicodeUtils.downcase(value.to_s)]
+      @value = {'gleich'    => :gleichbleibend,
+                'steigend'  => :steigend,
+                'fallend'   => :fallend,
+                'unbekannt' => :unbekannt}[UnicodeUtils.downcase(value.to_s)]
 
       raise IllegalValueError, "Unknown trend #{value.inspect}" unless @value
     end
 
     def symbol
-      {:gleichbleibend => '⬄', :steigend => '⬀', :fallend => '⬂'}[@value]
+      {:gleichbleibend => '⬄',
+       :steigend       => '⬀',
+       :fallend        => '⬂',
+       :unbekannt      => '?'}[@value]
     end
 
     def to_s

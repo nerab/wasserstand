@@ -3,7 +3,7 @@ require 'helper'
 
 class TestTrend < WasserstandTestCase
 
-  def test_create_unknown
+  def test_create_illegal
     assert_raises(ArgumentError){Trend.new}
     assert_raises(IllegalValueError){Trend.new(nil)}
     assert_raises(IllegalValueError){Trend.new('foobar')}
@@ -31,10 +31,18 @@ class TestTrend < WasserstandTestCase
     assert_trend_fallend(Trend.new(:fallend))
   end
 
+  def test_create_unbekannt
+    assert_trend_unbekannt(Trend.new('unbekannt'))
+    assert_trend_unbekannt(Trend.new('Unbekannt'))
+    assert_trend_unbekannt(Trend.new('UNBEKANNT'))
+    assert_trend_unbekannt(Trend.new(:unbekannt))
+  end
+
   def test_mapped
     assert_trend_gleich(Waterway['BODENSEE'].levels['KONSTANZ'].measurements.last.trend)
     assert_trend_steigend(Waterway['Oder'].levels['SCHWEDT-ODERBRÜCKE'].measurements.last.trend)
     assert_trend_fallend(Waterway['Elbe'].levels['STADERSAND'].measurements.last.trend)
+    assert_trend_unbekannt(Waterway['Saale'].levels['Nienburg'].measurements.last.trend)
   end
 
   private
@@ -55,5 +63,11 @@ class TestTrend < WasserstandTestCase
     assert(trend)
     assert_equal('⬀', trend.symbol)
     assert_equal('steigend', trend.to_s)
+  end
+
+  def assert_trend_unbekannt(trend)
+    assert(trend)
+    assert_equal('?', trend.symbol)
+    assert_equal('unbekannt', trend.to_s)
   end
 end
