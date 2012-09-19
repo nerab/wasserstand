@@ -1,33 +1,10 @@
 module Wasserstand
-  # http://stackoverflow.com/questions/2030336/how-do-i-create-a-hash-in-ruby-that-compares-strings-ignoring-case
-  class HashClod < Hash
-    def [](key)
-      key.respond_to?(:upcase) ? super(UnicodeUtils.upcase(key)) : super(key)
-    end
-
-    def []=(key, value)
-      key.respond_to?(:upcase) ? super(UnicodeUtils.upcase(key), value) : super(key, value)
-    end
-  end
-
   class Waterway
     class << self
-      def [](name)
-        provider[name]
-      end
+      include Wasserstand::Finders
 
       def all
-        provider.all
-      end
-
-      def find_by_name(regex)
-        provider.find_by_name(regex)
-      end
-
-      private
-
-      def provider
-        Wasserstand.providers[PegelOnline::WaterwayProvider]
+        Wasserstand.provider.waterways
       end
     end
 
@@ -40,6 +17,10 @@ module Wasserstand
 
     def to_s
       name
+    end
+
+    def inspect
+      "#<#{self.class.name}: #{name} (#{levels.size} levels)>"
     end
   end
 end

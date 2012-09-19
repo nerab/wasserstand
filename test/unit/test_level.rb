@@ -12,11 +12,6 @@ class TestLevel < WasserstandTestCase
     assert_level({:name => 'PIRNA', :km => 34.67, :measurements_size => 1}, elbe_levels['PIRNA'])
   end
 
-  def test_finder
-    assert_equal(['HEIDELBERG UW', 'HAVELBERG EP', 'HAVELBERG STADT', 'HAVELBERG UP'], Level.find_by_name('ELBERG').map{|w| w.name})
-    assert_equal(21, Level.find_by_name('^E').size)
-  end
-
   def test_lookup
     pirna = Level['Pirna']
     assert(pirna)

@@ -2,24 +2,12 @@ module Wasserstand
   #
   # see http://www.pegelonline.wsv.de/gast/hilfe#hilfe_pegelparameter
   #
-  class Level # Pegel
+  class Level
     class << self
-      def [](name)
-        provider[name]
-      end
+      include Finders
 
       def all
-        provider.all
-      end
-
-      def find_by_name(regex)
-        provider.find_by_name(regex)
-      end
-
-      private
-
-      def provider
-        Wasserstand.providers[PegelOnline::LevelProvider]
+        Wasserstand.provider.levels
       end
     end
 
@@ -42,6 +30,10 @@ module Wasserstand
 
     def to_s
       name
+    end
+
+    def inspect
+      "#<#{self.class.name}: #{name} (#{measurements.size} measurements)>"
     end
   end
 end
