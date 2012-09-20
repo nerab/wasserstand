@@ -19,6 +19,8 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'nokogiri'
   gem.add_runtime_dependency 'tzinfo'
   gem.add_runtime_dependency 'unicode_utils'
+  gem.add_runtime_dependency 'log4r'
+
   gem.add_development_dependency 'minitest'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'pry'

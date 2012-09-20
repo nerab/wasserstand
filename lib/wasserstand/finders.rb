@@ -1,6 +1,7 @@
 module Wasserstand
   module Finders
     def [](name)
+      return nil if name.to_s.empty?
       results = all.select{|named| UnicodeUtils.upcase(name) == named.name}
 
       case results.size

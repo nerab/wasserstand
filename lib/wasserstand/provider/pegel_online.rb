@@ -44,7 +44,7 @@ module Wasserstand
       #
       def replenish
         @names.clear
-        STDERR.puts "FETCH #{@url}"
+        Wasserstand.logger.info "Fetching #{@url}"
         doc = Nokogiri::HTML(open(@url).read, nil, 'ISO-8859-1')
         doc.xpath("//data/table/gewaesser").each do |node|
           ww = WaterwayMapper.map(node)

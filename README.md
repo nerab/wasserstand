@@ -20,4 +20,4 @@ Or install it yourself as:
 
 ## Usage
 
-see tests
+See the tests or bin/wasserstand for usage examples.

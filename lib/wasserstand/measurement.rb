@@ -11,7 +11,7 @@ module Wasserstand
     end
 
     def to_s
-      "#{@date}: #{@value} cm, trend #{@trend}"
+      "#{@date}: #{@value} cm, Trend #{@trend}"
     end
   end
 end

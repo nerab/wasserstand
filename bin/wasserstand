@@ -6,11 +6,61 @@ Bundler.require
 require 'wasserstand'
 require 'optparse'
 
-options = {}
 OptionParser.new do |opts|
-  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
-    options[:verbose] = v
+  opts.banner = <<HERE
+Wasserstand provides water level information as provided by PegelOnline.
+
+Usage:
+    #{File.basename($0)} [options] [WATERWAY | LEVEL]
+
+Author:
+    Nicolas E. Rabenau nerab@gmx.at
+
+Homepage:
+    http://github.com/nerab/wasserstand
+
+Options:
+HERE
+
+  opts.on("-w", "--verbose", "Run verbosely") do |v|
+    Wasserstand.logger.level = Log4r::INFO
+    Wasserstand.logger.info("Enable info logger")
+  end
+
+  opts.on("-t", "--trace", "Run with traces enabled") do |v|
+    Wasserstand.logger.level = Log4r::ALL
+    Wasserstand.logger.debug("Enable debug logger")
+  end
+
+  opts.on("-u", "--url URL", "Use URL to fetch levels") do |url|
+    Wasserstand.logger.info("Using URL #{url}")
+    Wasserstand.provider = Wasserstand::Provider::PegelOnline.new(url)
   end
 end.parse!
 
-puts Wasserstand::Waterway['BODENSEE'].pegel.first.last.messwerte.first
+query = ARGV.shift
+
+if query.nil?
+  Wasserstand::Waterway.all.each{|ww| puts "#{ww.name} (#{ww.levels.size} levels)"}
+else
+  begin
+    waterway = Wasserstand::Waterway[query]
+
+    if waterway
+      puts "#{waterway.name} has #{waterway.levels.size} levels:"
+      waterway.levels.sort_by{|name, level| level.km}.each{|name, level| puts "#{name} (km #{level.km}): #{level.measurements.last}"}
+    else
+      level = Wasserstand::Level[query]
+
+      if level.nil?
+        STDERR.puts "#{File.basename($0)}: No waterway nor level found that matches '#{query}."
+      else
+        puts "Level #{level.name} (#{level.waterway}, km #{level.km}):"
+        level.measurements.each{|measurement| puts measurement}
+      end
+    end
+  rescue
+    STDERR.puts $!
+    $!.backtrace.each{|msg| Wasserstand.logger.debug(msg)}
+  end
+end
