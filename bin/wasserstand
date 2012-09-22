@@ -58,9 +58,7 @@ end.parse!
 
 Wasserstand.provider = Wasserstand::Provider::PegelOnline.new(options[:url])
 
-if options[:cache].nil?
-  Wasserstand.provider.cache = Wasserstand::HeapCache.new
-else
+if options[:cache]
   Bundler.require(:default, :dalli)
   Wasserstand.logger.info("Using memcached at #{options[:cache]}")
   Wasserstand.provider.cache = Dalli::Client.new(options[:cache], :expires_in => 60 * 60)

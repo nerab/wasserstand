@@ -5,7 +5,7 @@ module Wasserstand
       extend Forwardable
       def_delegator :all, :each
 
-      def initialize(url)
+      def initialize(url = nil)
         @url = url || 'http://www.pegelonline.wsv.de/svgz/pegelstaende_neu.xml'
       end
 
@@ -33,7 +33,7 @@ module Wasserstand
 
       def cache
         if @cache.nil?
-          self.cache = NullCache.new
+          self.cache = HeapCache.new
         end
         @cache
       end

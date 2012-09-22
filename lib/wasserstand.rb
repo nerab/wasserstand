@@ -15,7 +15,7 @@ module Wasserstand
   class << self
     def provider
       if @provider.nil?
-        provider = Provider::PegelOnline.new # go through attribute writer in order to log
+        self.provider = Provider::PegelOnline.new # go through attribute writer in order to log
       end
       @provider
     end
