@@ -8,6 +8,5 @@ class WasserstandTestCase < MiniTest::Unit::TestCase
     url = File.join(File.dirname(__FILE__), 'fixtures', 'pegelstaende_neu.xml')
     Wasserstand.provider = Provider::PegelOnline.new(url)
     Wasserstand.provider.cache = HeapCache.new
-    Wasserstand.logger.level = Log4r::INFO
   end
 end

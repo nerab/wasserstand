@@ -1,4 +1,4 @@
-* Support memcached URL as parameter to the command line client
+* Extract controller class from bin script
 * Tests for the command line client
 * CSV output for the command line client
 * JSON output for the command line client

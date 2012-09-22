@@ -5,9 +5,8 @@ module Wasserstand
       extend Forwardable
       def_delegator :all, :each
 
-      def initialize(url = 'http://www.pegelonline.wsv.de/svgz/pegelstaende_neu.xml')
-        Wasserstand.logger.debug "New provider, will fetch from #{@url}"
-        @url = url
+      def initialize(url)
+        @url = url || 'http://www.pegelonline.wsv.de/svgz/pegelstaende_neu.xml'
         @names = []
       end
 
@@ -17,7 +16,7 @@ module Wasserstand
         @names.map do |name|
           ww = cache.get(name) # no fetch with block in Dalli, so we cannot use it here either ...
 
-          # Not finding the Waterway for a name means it was removed from the cache, but it may or may not exist in the backend. Therefore we need to replenish our cache including our knowledge about the name.
+          # Not finding the Waterway for a name means it was removed from the cache, but it may or may not exist in the backend. Therefore we need to replenish our cache including our knowledge about the names.
           if ww.nil?
             replenish
             ww = cache.get(name)
@@ -42,6 +41,10 @@ module Wasserstand
       def cache=(c)
         Wasserstand.logger.info "Using cache #{c}"
         @cache = c
+      end
+
+      def to_s
+        "#<#{self.class.name}:#{@url}>"
       end
 
       private

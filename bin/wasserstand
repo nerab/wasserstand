@@ -6,6 +6,8 @@ Bundler.require
 require 'wasserstand'
 require 'optparse'
 
+options = {}
+
 OptionParser.new do |opts|
   opts.banner = <<HERE
 Wasserstand provides water level information as provided by PegelOnline.
@@ -33,13 +35,23 @@ HERE
   end
 
   opts.on("-u", "--url URL", "Use URL to fetch levels") do |url|
-    Wasserstand.logger.info("Using URL #{url}")
-    Wasserstand.provider = Wasserstand::Provider::PegelOnline.new(url)
+    options[:url] = url
+  end
+
+  opts.on("-c", "--cache [URL]", "Use memcached at URL, defaults to 127.0.0.1:11211") do |url|
+    options[:cache] = url || '127.0.0.1:11211'
   end
 end.parse!
 
-# Use the heap cache by default
-Wasserstand.provider.cache = Wasserstand::HeapCache.new
+Wasserstand.provider = Wasserstand::Provider::PegelOnline.new(options[:url])
+
+if options[:cache].nil?
+  Wasserstand.provider.cache = Wasserstand::HeapCache.new
+else
+  Bundler.require(:default, :dalli)
+  Wasserstand.logger.info("Using memcached at #{options[:cache]}")
+  Wasserstand.provider.cache = Dalli::Client.new(options[:cache])
+end
 
 query = ARGV.shift
 
