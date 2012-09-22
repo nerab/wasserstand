@@ -10,10 +10,23 @@ options = {}
 
 params = OptionParser.new do |opts|
   opts.banner = <<HERE
-Wasserstand provides water level information as provided by PegelOnline.
+Shows water level information as provided by PegelOnline.
 
 Usage:
-    #{File.basename($0)} [options] [WATERWAY | LEVEL]
+    #{File.basename($0)} [options] [WATERWAY | LEVEL | WATERWAY LEVEL]
+
+Examples:
+    # all waterways
+    #{File.basename($0)}
+
+    # single waterway
+    #{File.basename($0)} Rhein
+
+    # single level
+    #{File.basename($0)} Koblenz
+
+    # single level that happens to have the same name as a waterway
+    #{File.basename($0)} Ilm Ilmenau
 
 Author:
     Nicolas E. Rabenau nerab@gmx.at
@@ -38,7 +51,7 @@ HERE
     options[:url] = url
   end
 
-  opts.on("-c", "--cache [URL]", "Use memcached at URL, defaults to 127.0.0.1:11211") do |url|
+  opts.on("-c", "--cache [URL]", "Use memcached at URL instead of heap. URL defaults to 127.0.0.1:11211.") do |url|
     options[:cache] = url || '127.0.0.1:11211'
   end
 end.parse!

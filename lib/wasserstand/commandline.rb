@@ -49,16 +49,26 @@ module Wasserstand
         STDERR.puts "No matching level found."
       else
         if level.respond_to?(:each)
-          #STDERR.puts "#{level.waterway.name} has the following levels:"
-          level.each{|l| present_level(l, false)} # TODO Is shortcut possible? level.each(&:present_level)
+          level.each{|l| present_level(l, false)}
         else
           if !dig
             puts level.name
           else
             STDERR.puts "#{level.name} (#{level.waterway}, km #{level.km}):"
-            # TODO present_measurements(level.measurements)
-            level.measurements.each{|measurement| puts measurement}
+            present_measurement(level.measurements)
           end
+        end
+      end
+    end
+
+    def self.present_measurement(measurement)
+      if measurement.nil?
+        STDERR.puts "No measurement found."
+      else
+        if measurement.respond_to?(:each)
+          measurement.each{|l| present_measurement(l)}
+        else
+          puts measurement
         end
       end
     end
