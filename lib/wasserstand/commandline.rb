@@ -46,7 +46,7 @@ module Wasserstand
 
     def self.present_level(level, dig = true)
       if level.nil?
-        STDERR.puts "No matching level found."
+        STDERR.puts "No match found."
       else
         if level.respond_to?(:each)
           level.each{|l| present_level(l, false)}
