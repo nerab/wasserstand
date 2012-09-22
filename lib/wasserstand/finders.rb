@@ -10,7 +10,7 @@ module Wasserstand
       when 1
         results.first
       else
-        raise AmbigousNameError "Name '#{name}' is not unique. Found #{results.size} results."
+        raise AmbigousNameError.new "Name '#{name}' is not unique. Found #{results.size} results."
       end
     end
   end

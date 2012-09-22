@@ -21,6 +21,12 @@ class TestLevel < WasserstandTestCase
     assert(Level['GENTHIN'])
   end
 
+  def test_ambigous_name
+    assert_raises(Wasserstand::AmbigousNameError) do
+      Level['Nienburg']
+    end
+  end
+
   private
 
   def assert_level(values, level)
