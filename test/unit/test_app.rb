@@ -32,13 +32,13 @@ class TestApp < MiniTest::Unit::TestCase
 
   def test_level
     stdout, stderr = execute(['Cochem'])
-    assert_equal(["2012-09-13 20:15:00 +0200: 221.0 cm, Trend fallend\n"], stdout)
+    assert_equal(["2012-09-13 18:15:00 +0000: 221.0 cm, Trend fallend\n"], stdout)
     assert_equal(["COCHEM (MOSEL, km 51.6):\n"], stderr)
   end
 
   def test_level_with_waterway
     stdout, stderr = execute(['Ems', 'Knock'])
-    assert_equal(["2012-09-13 22:31:00 +0200: 626.6 cm, Trend fallend\n"], stdout)
+    assert_equal(["2012-09-13 20:31:00 +0000: 626.6 cm, Trend fallend\n"], stdout)
     assert_equal(["KNOCK (EMS, km 50.848):\n"], stderr)
   end
 
@@ -52,6 +52,7 @@ class TestApp < MiniTest::Unit::TestCase
 
   def execute(params = [], options = {})
     line = []
+    line << "TZ='UTC'"
     line << APP_SCRIPT
     line.concat(Array(params))
     line << DEFAULT_OPTIONS.merge(options).map do |k,v|
