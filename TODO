@@ -1,3 +1,2 @@
-* Use finders (by means of select) instead of lookup in command-line client
 * CSV output for the command line client
 * JSON output for the command line client
