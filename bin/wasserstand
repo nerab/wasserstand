@@ -8,7 +8,7 @@ require 'optparse'
 
 options = {}
 
-OptionParser.new do |opts|
+params = OptionParser.new do |opts|
   opts.banner = <<HERE
 Wasserstand provides water level information as provided by PegelOnline.
 
@@ -53,30 +53,9 @@ else
   Wasserstand.provider.cache = Dalli::Client.new(options[:cache], :expires_in => 60 * 60)
 end
 
-query = ARGV.shift
-
-if query.nil?
-  STDERR.puts "The following waterways are available:"
-  Wasserstand::Waterway.all.each{|ww| puts ww.name}
-else
-  begin
-    waterway = Wasserstand::Waterway[query]
-
-    if waterway
-      STDERR.puts "Waterway #{waterway.name} has #{waterway.levels.size} levels:"
-      waterway.levels.sort_by{|name, level| level.km}.each{|name, level| puts name}
-    else
-      level = Wasserstand::Level[query]
-
-      if level.nil?
-        STDERR.puts "#{File.basename($0)}: No waterway nor level found that matches '#{query}."
-      else
-        STDERR.puts "Level #{level.name} (#{level.waterway}, km #{level.km}):"
-        level.measurements.each{|measurement| puts measurement}
-      end
-    end
-  rescue
-    STDERR.puts $!
-    $!.backtrace.each{|msg| Wasserstand.logger.debug(msg)}
-  end
+begin
+  Wasserstand::Commandline.get(params)
+rescue
+  STDERR.puts $!
+  $!.backtrace.each{|msg| Wasserstand.logger.debug(msg)}
 end
