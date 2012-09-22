@@ -1,13 +1,12 @@
 module Wasserstand
   module Provider
     class PegelOnline
-      attr_writer :cache
-
       include Enumerable
       extend Forwardable
       def_delegator :all, :each
 
       def initialize(url = 'http://www.pegelonline.wsv.de/svgz/pegelstaende_neu.xml')
+        Wasserstand.logger.debug "New provider, will fetch from #{@url}"
         @url = url
         @names = []
       end
@@ -34,7 +33,15 @@ module Wasserstand
       end
 
       def cache
-        @cache ||= HeapCache.new
+        if @cache.nil?
+          self.cache = NullCache.new
+        end
+        @cache
+      end
+
+      def cache=(c)
+        Wasserstand.logger.info "Using cache #{c}"
+        @cache = c
       end
 
       private

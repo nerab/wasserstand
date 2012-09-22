@@ -1,4 +1,7 @@
 module Wasserstand
+  #
+  # Cache objects in memory
+  #
   class HeapCache
     def initialize
       @backend = {}

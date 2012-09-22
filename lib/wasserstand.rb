@@ -13,10 +13,16 @@ module Wasserstand
   AmbigousNameError = Class.new(StandardError)
 
   class << self
-    attr_writer :provider
-
     def provider
-      @provider ||= Provider::PegelOnline.new
+      if @provider.nil?
+        provider = Provider::PegelOnline.new # go through attribute writer in order to log
+      end
+      @provider
+    end
+
+    def provider=(p)
+      Wasserstand.logger.info "Using provider #{p}"
+      @provider = p
     end
 
     def logger

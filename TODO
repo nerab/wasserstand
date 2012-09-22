@@ -1,3 +1,4 @@
+* Support memcached URL as parameter to the command line client
 * Tests for the command line client
 * CSV output for the command line client
 * JSON output for the command line client
