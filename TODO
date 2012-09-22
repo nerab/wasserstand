@@ -1,4 +1,5 @@
 * Extract controller class from bin script
+* ILMENAU is both the name of a waterway as well as a level. Find a way to query the level without catching the waterway first
 * Tests for the command line client
 * CSV output for the command line client
 * JSON output for the command line client

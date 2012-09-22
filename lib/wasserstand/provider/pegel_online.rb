@@ -7,13 +7,13 @@ module Wasserstand
 
       def initialize(url)
         @url = url || 'http://www.pegelonline.wsv.de/svgz/pegelstaende_neu.xml'
-        @names = []
       end
 
-      # Cache entries may expire, and simply iterating over the list of current cache entries would render an incomplete picture. Therefore we maintain the knowledge of what waterways exist in a single list, which is the authoritative source of what waterways exist.
+      # Cache entries may expire, and simply iterating over the list of current cache entries would render an incomplete picture. Therefore we maintain the knowledge of what waterways exist in a single list, which is the authoritative source. If that one is gone, it is gone as a whole and everything will need to be refreshed.
       def waterways
-        replenish if @names.empty?
-        @names.map do |name|
+        names = cache.get(KEY_NAMES) || replenish
+
+        names.map do |name|
           ww = cache.get(name) # no fetch with block in Dalli, so we cannot use it here either ...
 
           # Not finding the Waterway for a name means it was removed from the cache, but it may or may not exist in the backend. Therefore we need to replenish our cache including our knowledge about the names.
@@ -49,18 +49,23 @@ module Wasserstand
 
       private
 
+      KEY_NAMES = "#{self.name}#names"
+
       #
       # Replenish the cache and names index
       #
       def replenish
-        @names.clear
         Wasserstand.logger.info "Fetching #{@url}"
         doc = Nokogiri::HTML(open(@url).read, nil, 'ISO-8859-1')
+
+        names = []
         doc.xpath("//data/table/gewaesser").each do |node|
           ww = WaterwayMapper.map(node)
-          @names << ww.name
           cache.set(ww.name, ww)
+          names << ww.name
         end
+        cache.set(KEY_NAMES, names)
+        names
       end
     end
   end

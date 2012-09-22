@@ -50,7 +50,7 @@ if options[:cache].nil?
 else
   Bundler.require(:default, :dalli)
   Wasserstand.logger.info("Using memcached at #{options[:cache]}")
-  Wasserstand.provider.cache = Dalli::Client.new(options[:cache])
+  Wasserstand.provider.cache = Dalli::Client.new(options[:cache], :expires_in => 60 * 60)
 end
 
 query = ARGV.shift
@@ -63,7 +63,7 @@ else
     waterway = Wasserstand::Waterway[query]
 
     if waterway
-      STDERR.puts "#{waterway.name} has #{waterway.levels.size} levels:"
+      STDERR.puts "Waterway #{waterway.name} has #{waterway.levels.size} levels:"
       waterway.levels.sort_by{|name, level| level.km}.each{|name, level| puts name}
     else
       level = Wasserstand::Level[query]
